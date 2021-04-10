@@ -86,12 +86,12 @@ var client = exports.client = function(user){
 
 
 var all_users = exports.all_users = async function(connection){
-    return (await db.fetch("SELECT user FROM user",null,connection)).map(x=>x["user"]);
+    return (await fetch("SELECT user FROM user",null,connection)).map(x=>x["user"]);
 }
 
 
 var all_databases = exports.all_databases = async function(connection){
-    let rows = await db.fetch(`SHOW DATABASES ${subquery}`,null,connection);
+    let rows = await fetch(`SHOW DATABASES ${subquery}`,null,connection);
 
     let database_names = [];
     let native_database_names = ["information_schema","mysql","performance_schema","sys"];
