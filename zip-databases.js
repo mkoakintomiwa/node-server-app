@@ -36,9 +36,10 @@ fx.println();
 
     // zip.writeZip("server-db.zip");
 
-    console.log(db.users());
+    let users = await db.fetch("SELECT user FROM user");
+    let users = users.map(x=>x["user"]);
 
-    console.log(db.client("edepos5_admin_2"));
+    console.log(users);
     
     db.close_connection(conn);
 })();
