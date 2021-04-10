@@ -3,7 +3,7 @@ let db  = require("./mysql");
 let argv = require("yargs").argv;
 var AdmZip = require('adm-zip');
 
-
+fx.println();
 
 let conn = db.create_connection();
 (async _=>{
@@ -27,7 +27,8 @@ let conn = db.create_connection();
         let dump = await fx.shell_exec(`mysqldump -u root ${database_name}`);
         console.log(`Adding ${database_name} to zip archive`);
         zip.addFile(`databases/${database_name}.sql`,Buffer.alloc(dump.length,dump));
-        console.log("\n");
+        fx.println();
+        fx.println();
     }
 
     zip.writeZip("server-db.zip");
