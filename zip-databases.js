@@ -1,5 +1,9 @@
 let fx = require("./functions");
+let db  = require("./mysql");
 
-let config = fx.config();
 
-console.log(config);
+let conn = db.createConnection();
+(async _=>{
+    console.log(await db.fetch("SHOW DATABASES",null,conn));
+    db.closeConnection();
+})();

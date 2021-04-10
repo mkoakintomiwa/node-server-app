@@ -1,32 +1,31 @@
 const mysql = require('mysql2');
-const { setDefault,setDefaults,settings } = require('./functions');
+const fx = require('./functions');
 
 
-var _conn = exports._conn = function(db_name=null,db_user=null,host="localhost"){
-    
-    var _settings = settings();
-    if (!db_name) db_name = _settings.db_name;
-    if (!db_user) db_user = _settings.db_user;
+var createConnection = exports.createConnection = function(options={}){
+
+    let config = fx.config();
+
+    let $options = fx.setDefaults({
+        host:"localhost",
+        user: "root",
+        password: config.mysql.root.password,
+        database:"mysql",
+    },options);
 
     return mysql.createConnection({
-        host: host,
-        user: db_user,
-        password:_settings.db_password,
-        database: db_name,
+        host: $options.host,
+        user: $options.user,
+        password:$options.password,
+        database: $options.database,
         multipleStatements: true
     });
 }
 
 
-var _conn_files = exports._conn_files = function(){
-    return mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: db+"_files",
-        multipleStatements: true
-    });
+var closeConnection = exports.closeConnection = function(connection){
+    connection.end();
 }
-
 
 
 var import_db = exports.import_db = function(db_name=null,db_user=DB_USER,db_password=DB_PASSWORD,db_host=DB_HOST){
@@ -48,11 +47,10 @@ var import_db = exports.import_db = function(db_name=null,db_user=DB_USER,db_pas
 }
 
 
-var execute = exports.execute = function(query,parameters,conn=null,retain_connection=true){
-    //if (!conn) conn = _conn();
+var execute = exports.execute = function(query,parameters,conn){
+    
     return new Promise((resolve,reject)=>{
         conn.execute(query,parameters,(err,results,fields)=>{
-            //if(!retain_connection) conn.end();
             if (err){
                 reject(err);
             }else{
@@ -63,35 +61,16 @@ var execute = exports.execute = function(query,parameters,conn=null,retain_conne
 }
 
 
-var fetch = exports.fetch = function(query,parameters=[],db_conn=null,retain_connection=null){
-
-    var conn;
-    if (!db_conn){
-        //conn=_conn();
-        if (!retain_connection) retain_connection = false;
-    }else{
-        if (typeof db_conn === "string"){
-            conn = _conn(db_conn);
-        }else{
-            conn = db_conn;
-        }
-        if (!retain_connection) retain_connection = true;
-    }
-
-    return execute(query,parameters,conn,retain_connection);
-    
+var fetch = exports.fetch = async function(query,parameters=[],connection){
+    let rows;
+    await execute(query,parameters,connection).then(_results=>rows=_results);
+    return rows;
 }
 
 
 
-var fetch_one = exports.fetch_one = function(query,parameters=[],db_conn=null,retain_connection=null){
-    return new Promise((resolve,reject)=>{
-        fetch(query,parameters,db_conn,retain_connection).then(results=>{
-            resolve(results[0]);
-        }).catch(err=>{
-            reject(err);
-        })
-    });
+var fetch_one = exports.fetch_one = async function(query,parameters=[],connection){
+    return (await fetch(query,parameters,connection))[0];
 }
 
 
