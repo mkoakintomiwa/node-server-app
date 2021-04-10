@@ -36,7 +36,7 @@ fx.println();
 
     // zip.writeZip("server-db.zip");
 
-    let users = await db.fetch("SELECT user FROM user");
+    let users = await db.fetch("SELECT user FROM user",null,conn);
     users = users.map(x=>x["user"]);
 
     console.log(users);
