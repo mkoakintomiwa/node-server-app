@@ -25,16 +25,20 @@ fx.println();
         fx.println();
     }
 
-    let users = db.users();
+    console.log("Writing clients...");
+
+    //let users = db.users();
 
     let clients = [];
 
     for (let user of await db.all_users(conn)){
-        if (users.includes(user) && user!="root"){
+        if (user!="root"){
+            console.log(user)
+            fx.println();
             clients.push({
                 user: user,
-                password: db.client(user).password,
-                grants: await db.userGrants(user,conn)
+                createUser: await db.createUserQueries(user,conn),
+                grants: await db.userGrantsQueries(user,conn)
             });
         }    
     }
@@ -43,7 +47,12 @@ fx.println();
 
     zip.addFile(`clients.json`,Buffer.alloc(content.length,content));
 
+    console.log("Creating server-db.zip");
+
     zip.writeZip("server-db.zip");
     
     db.close_connection(conn);
+
+    fx.println();
+    fx.println();
 })();

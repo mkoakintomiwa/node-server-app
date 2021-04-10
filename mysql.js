@@ -85,8 +85,13 @@ var client = exports.client = function(user){
 }
 
 
-var userGrants = exports.userGrants = async function(user,connection){
+var userGrantsQueries = exports.userGrantsQueries = async function(user,connection){
     return (await fetch(`SHOW GRANTS FOR '${user}'@'localhost'`,null,connection)).map(x=>Object.values(x)[0]);
+}
+
+
+var createUserQueries = exports.createUserQueries = async function(user,connection){
+    return Object.values(await fetch_one(`SHOW CREATE USER '${user}'@'localhost'`,null,connection))[0];
 }
 
 
