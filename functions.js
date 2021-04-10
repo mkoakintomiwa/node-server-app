@@ -265,10 +265,8 @@ var shell_exec = exports.shell_exec = async function(command,_options={}){
 		},
 		hide_output:false
 	},_options);
-	
-	var _document_root = document_root();
 
-	var logFile = path.join(_document_root,".webman/shell");
+	var logFile = "/root/shell";
 	var command_append;
 
 	if (options.hide_output){
