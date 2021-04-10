@@ -23,8 +23,11 @@ let conn = db.create_connection();
     var zip = new AdmZip();
 
     for (let database_name of database_names){
+        console.log(`Dumping ${database_name}`);
         let dump = await fx.shell_exec(`mysqldump -u root ${database_name}`);
+        console.log(`Adding ${database_name} to zip archive`);
         zip.addFile(`databases/${database_name}.sql`,Buffer.alloc(dump.length,dump));
+        console.log("\n");
     }
 
     zip.writeZip("server-db.zip");
