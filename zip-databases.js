@@ -38,11 +38,13 @@ fx.println();
 
     let users = db.users();
 
-    for (let user of db.all_users(conn)){
-        if (users.includes(user)){
-            console.log(db.client(user));
-        }    
-    }
+    console.log(db.all_users(conn))
+
+    // for (let user of db.all_users(conn)){
+    //     if (users.includes(user)){
+    //         console.log(db.client(user));
+    //     }    
+    // }
     
     db.close_connection(conn);
 })();
