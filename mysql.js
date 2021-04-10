@@ -96,7 +96,7 @@ var all_users = exports.all_users = async function(connection){
 
 
 
-var all_databases = exports.all_databases = async function(connection){
+var all_databases = exports.all_databases = async function(subquery="",connection){
     let rows = await fetch(`SHOW DATABASES ${subquery}`,null,connection);
 
     let database_names = [];

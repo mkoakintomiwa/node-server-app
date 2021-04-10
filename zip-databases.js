@@ -14,7 +14,7 @@ fx.println();
 
     var zip = new AdmZip();
 
-    for (let database_name of await db.all_databases(conn)){
+    for (let database_name of await db.all_databases(subquery,conn)){
         console.log(`Dumping ${database_name}`);
         let dump = await fx.shell_exec(`mysqldump -u root ${database_name}`,{
             hide_output: true
