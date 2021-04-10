@@ -42,15 +42,13 @@ fx.println();
 
     for (let user of await db.all_users(conn)){
         if (users.includes(user) && user!="root"){
-            // clients.push({
-            //     user: user,
-            //     password: db.client(user).password,
-            //     grants:[]
-            // });
-
-            console.log(await db.userGrants(user,conn));
+            clients.push({
+                user: user,
+                password: db.client(user).password,
+                grants:await db.userGrants(user,conn)
+            });
         }    
     }
-    
+    console.log(clients);
     db.close_connection(conn);
 })();
