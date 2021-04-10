@@ -1,0 +1,24 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "functions.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkoakintomiwa/node-server-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkoakintomiwa/node-server-app/issues"
+  },
+  "homepage": "https://github.com/mkoakintomiwa/node-server-app#readme",
+  "dependencies": {
+    "adm-zip": "^0.5.5",
+    "mysql2": "^2.2.5",
+    "yargs": "^16.2.0"
+  }
+}

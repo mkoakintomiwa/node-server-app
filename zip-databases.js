@@ -39,7 +39,7 @@ fx.println();
         }    
     }
 
-    let content = JSON.stringify(clients);
+    let content = JSON.stringify(clients,null,4);
 
     zip.addFile(`clients.json`,Buffer.alloc(content.length,content));
 
