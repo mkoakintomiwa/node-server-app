@@ -9,7 +9,7 @@ var createConnection = exports.createConnection = function(options={}){
     let $options = fx.setDefaults({
         host:"localhost",
         user: "root",
-        password: config.mysql.root.password,
+        password: config.mysql.clients.root.password,
         database:"mysql",
     },options);
 
