@@ -872,7 +872,7 @@ var random_float = exports.random_float = function(min,max,precision=2){
 
 
 var config = exports.config = function(){
-    return JSON.parse(fs.readFileSync(path.join("root","server-config.json")).toString())
+    return JSON.parse(fs.readFileSync("/root/server-config.json").toString())
 }
 
 
