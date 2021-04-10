@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const {spawn} = require("child_process");
-const sqlite = require("./sqlite");
 const EventEmitter = require('events');
 
 const eventEmitter = new EventEmitter();
