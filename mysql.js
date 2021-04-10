@@ -85,9 +85,15 @@ var client = exports.client = function(user){
 }
 
 
+var userGrants = exports.userGrants = async function(user,connection){
+    return (await fetch(`SHOW GRANTS FOR '${user}'@'localhost'`));
+}
+
+
 var all_users = exports.all_users = async function(connection){
     return (await fetch("SELECT user FROM user",null,connection)).map(x=>x["user"]);
 }
+
 
 
 var all_databases = exports.all_databases = async function(connection){

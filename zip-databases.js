@@ -38,10 +38,17 @@ fx.println();
 
     let users = db.users();
 
+    let clients = [];
+
     for (let user of await db.all_users(conn)){
         if (users.includes(user) && user!="root"){
-            console.log(user);
-            console.log(db.client(user));
+            // clients.push({
+            //     user: user,
+            //     password: db.client(user).password,
+            //     grants:[]
+            // });
+
+            console.log(await db.userGrants(user,conn));
         }    
     }
     
