@@ -251,8 +251,10 @@ var echo_log_file = exports.echo_log_file = function(){
 }
 
 
-
-var shell_exec = exports.shell_exec = function(command,_options={}){
+/**
+ * @returns {Promise<String>}
+ */
+var shell_exec = exports.shell_exec = async function(command,_options={}){
 	
 	var options = setDefaults({
 		stdout :data=>{
@@ -277,8 +279,8 @@ var shell_exec = exports.shell_exec = function(command,_options={}){
 	
 	command = `${command} 2>&1 ${command_append}`;
 	
-	
-	return new Promise(resolve=>{
+	let response;
+	await new Promise(resolve=>{
 
 		var spawnOptions = {
 			stdio:'inherit',
@@ -298,9 +300,11 @@ var shell_exec = exports.shell_exec = function(command,_options={}){
 		ls.on("exit",code=>{
 			var r = fs.readFileSync(logFile,"utf-8").trim();
 			fs.writeFileSync(logFile,"")
-			resolve(r);
+			response = r;
+            resolve(r);
 		});
 	});
+    return response;
 }
 
 

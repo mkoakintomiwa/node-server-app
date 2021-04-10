@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 const fx = require('./functions');
 
 
-var createConnection = exports.create_connection = function(options={}){
+var create_connection = exports.create_connection = function(options={}){
 
     let config = fx.config();
 
@@ -47,24 +47,24 @@ var import_db = exports.import_db = function(db_name=null,db_user=DB_USER,db_pas
 }
 
 
-var execute = exports.execute = function(query,parameters,conn){
-    
-    return new Promise((resolve,reject)=>{
-        conn.execute(query,parameters,(err,results,fields)=>{
+var execute = exports.execute = async function(query,parameters,connection){
+    let response;
+    await new Promise((resolve,reject)=>{
+        connection.execute(query,parameters,(err,results,fields)=>{
             if (err){
-                reject(err);
+                response = err;
             }else{
-                resolve(results);
+                response = results;
             }
+            resolve();
         });
     });
+    return response;
 }
 
 
 var fetch = exports.fetch = async function(query,parameters=[],connection){
-    let rows;
-    await execute(query,parameters,connection).then(_results=>rows=_results);
-    return rows;
+    return execute(query,parameters,connection);
 }
 
 
