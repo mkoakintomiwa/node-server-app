@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 const fx = require('./functions');
 
 
-var createConnection = exports.createConnection = function(options={}){
+var createConnection = exports.create_connection = function(options={}){
 
     let config = fx.config();
 
@@ -23,7 +23,7 @@ var createConnection = exports.createConnection = function(options={}){
 }
 
 
-var closeConnection = exports.closeConnection = function(connection){
+var close_connection = exports.close_connection = function(connection){
     connection.end();
 }
 

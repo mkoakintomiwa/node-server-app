@@ -4,10 +4,15 @@ let argv = require("yargs").argv;
 
 
 
-let conn = db.createConnection();
+let conn = db.create_connection();
 (async _=>{
     let subquery = "";
     if (argv._[0]) subquery = `LIKE '${argv._[0]}'`;
-    console.log(await db.fetch(`SHOW DATABASES ${subquery}`,null,conn));
-    db.closeConnection(conn);
+    let rows = await db.fetch(`SHOW DATABASES ${subquery}`,null,conn);
+
+    let database_names = Object.values(rows);
+
+    console.log(database_names);
+    
+    db.close_connection(conn);
 })();
