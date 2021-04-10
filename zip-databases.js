@@ -10,7 +10,11 @@ let conn = db.create_connection();
     if (argv._[0]) subquery = `LIKE '${argv._[0]}'`;
     let rows = await db.fetch(`SHOW DATABASES ${subquery}`,null,conn);
 
-    let database_names = Object.values(rows);
+    let database_names = [];
+
+    for (let row of rows){
+        database_names.push(Object.values(row)[0]);
+    }
 
     console.log(database_names);
     
