@@ -85,6 +85,26 @@ var client = exports.client = function(user){
 }
 
 
+var all_users = exports.all_users = async function(){
+    return (await db.fetch("SELECT user FROM user",null,conn)).map(x=>x["user"]);
+}
+
+
+var all_databases = exports.all_databases = async function(){
+    let rows = await db.fetch(`SHOW DATABASES ${subquery}`,null,conn);
+
+    let database_names = [];
+    let native_database_names = ["information_schema","mysql","performance_schema","sys"];
+
+    for (let row of rows){
+        let database_name = Object.values(row)[0];
+
+        if (!native_database_names.includes(database_name)) database_names.push(database_name);
+    }
+    return database_names;
+}
+
+
 class row_action{
     
     constructor(db_parameters=[]){
