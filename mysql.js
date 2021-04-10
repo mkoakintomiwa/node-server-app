@@ -86,7 +86,8 @@ var client = exports.client = function(user){
 
 
 var all_users = exports.all_users = async function(){
-    return (await db.fetch("SELECT user FROM user",null,conn)).map(x=>x["user"]);
+    let users = await db.fetch("SELECT user FROM user",null,conn);
+    return users.map(x=>x["user"]);
 }
 
 
