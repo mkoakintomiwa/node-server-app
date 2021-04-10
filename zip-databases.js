@@ -39,7 +39,8 @@ fx.println();
     let users = db.users();
 
     for (let user of await db.all_users(conn)){
-        if (users.includes(user)){
+        if (users.includes(user) && user!="root"){
+            console.log(user);
             console.log(db.client(user));
         }    
     }
