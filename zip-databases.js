@@ -9,32 +9,21 @@ fx.println();
     let conn = db.create_connection();
 
     let subquery = "";
-    // if (argv._[0]) subquery = `LIKE '${argv._[0]}'`;
-    // let rows = await db.fetch(`SHOW DATABASES ${subquery}`,null,conn);
+    if (argv._[0]) subquery = `LIKE '${argv._[0]}'`;
 
-    // let database_names = [];
-    // let native_database_names = ["information_schema","mysql","performance_schema","sys"];
 
-    // for (let row of rows){
-    //     let database_name = Object.values(row)[0];
+    var zip = new AdmZip();
 
-    //     if (!native_database_names.includes(database_name)) database_names.push(database_name);
-    // }
-
-    // var zip = new AdmZip();
-
-    // for (let database_name of database_names){
-    //     console.log(`Dumping ${database_name}`);
-    //     let dump = await fx.shell_exec(`mysqldump -u root ${database_name}`,{
-    //         hide_output: true
-    //     });
-    //     console.log(`Adding ${database_name} to zip archive`);
-    //     zip.addFile(`databases/${database_name}.sql`,Buffer.alloc(dump.length,dump));
-    //     fx.println();
-    //     fx.println();
-    // }
-
-    // zip.writeZip("server-db.zip");
+    for (let database_name of await db.all_databases(conn)){
+        console.log(`Dumping ${database_name}`);
+        let dump = await fx.shell_exec(`mysqldump -u root ${database_name}`,{
+            hide_output: true
+        });
+        console.log(`Adding ${database_name} to zip archive`);
+        zip.addFile(`databases/${database_name}.sql`,Buffer.alloc(dump.length,dump));
+        fx.println();
+        fx.println();
+    }
 
     let users = db.users();
 
@@ -45,10 +34,16 @@ fx.println();
             clients.push({
                 user: user,
                 password: db.client(user).password,
-                grants:await db.userGrants(user,conn)
+                grants: await db.userGrants(user,conn)
             });
         }    
     }
-    console.log(clients);
+
+    let content = JSON.stringify(clients);
+
+    zip.addFile(`clients.json`,Buffer.alloc(content.length,content));
+
+    zip.writeZip("server-db.zip");
+    
     db.close_connection(conn);
 })();
