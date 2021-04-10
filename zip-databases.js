@@ -11,9 +11,12 @@ let conn = db.create_connection();
     let rows = await db.fetch(`SHOW DATABASES ${subquery}`,null,conn);
 
     let database_names = [];
+    let native_database_names = ["information_schema","mysql","performance_schema","sys"];
 
     for (let row of rows){
-        database_names.push(Object.values(row)[0]);
+        let database_name = Object.values(row)[0];
+
+        if (!native_database_names.includes(database_name)) database_names.push();
     }
 
     console.log(database_names);
