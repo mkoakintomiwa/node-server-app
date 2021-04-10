@@ -73,6 +73,16 @@ var fetch_one = exports.fetch_one = async function(query,parameters=[],connectio
     return (await fetch(query,parameters,connection))[0];
 }
 
+var users = exports.users = function(){
+    let config = fx.config();
+    return Object.keys(config.mysql.clients);
+}
+
+
+var client = exports.client = function(user){
+    let config = fx.config();
+    return config.mysql.clients[user];
+}
 
 
 class row_action{
@@ -477,29 +487,4 @@ var primary_queries = exports.primary_queries = function(conn=null){
             resolve(queries);
         })
     })
-}
-
-
-
-var user = exports.user = function(uid){
-	const conn = _conn();
-	return new Promise(resolve=>{
-		fetch_one("SELECT * FROM community_details WHERE uid=?",[uid],conn,false).then(p=>{
-			resolve(p);
-		})
-	});
-}
-
-
-
-var current_session_term = exports.current_session_term = function(conn=null){
-	var argv  = require("yargs").argv;
-	var session_term = {};
-	return new Promise(resolve=>{
-		fetch_one("SELECT * FROM current_term",null,conn).then(p=>{
-			session_term.current_session =  argv.session?argv.session:p.session;
-			session_term.current_term = argv.term?argv.term:p.name;
-			resolve(session_term);
-		})
-	});
 }
