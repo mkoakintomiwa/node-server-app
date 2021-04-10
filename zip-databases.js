@@ -16,7 +16,7 @@ let conn = db.create_connection();
     for (let row of rows){
         let database_name = Object.values(row)[0];
 
-        if (!native_database_names.includes(database_name)) database_names.push();
+        if (!native_database_names.includes(database_name)) database_names.push(database_name);
     }
 
     console.log(database_names);
