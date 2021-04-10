@@ -36,7 +36,7 @@ fx.println();
 
     // zip.writeZip("server-db.zip");
 
-    let users = db.users();
+    let users = db.users(conn);
 
     for (let user of db.all_users()){
         if (users.includes(user)){
