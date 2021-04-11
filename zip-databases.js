@@ -38,8 +38,7 @@ fx.println();
             let client = db.client(user);
             clients.push({
                 user: user,
-                password: client.password,
-                grants: await db.userGrantsQueries(user,conn)
+                password: client.password
             });
         }    
     }
