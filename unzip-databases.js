@@ -15,9 +15,10 @@ var path = require("path");
         },async function(err,matches){
             for(let filePath of matches){
                 let database_name = path.basename(filePath).replace(".sql","");
+                await fx.shell_exec(`mysql --execute "CREATE DATABASE ${database_name}"`);
                 console.log(`Importing ${database_name}`);
                 fx.println();
-                await fx.shell_exec(`mysql -u root ${database_name} < ./server-db/${database_name}.sql`);
+                await fx.shell_exec(`mysql -u root ${database_name} < server-db/databases/${database_name}.sql`);
             }
             resolve();
         });
@@ -29,19 +30,16 @@ var path = require("path");
         console.log(`Running queries for ${client.user}`);
 
         console.log(`Creating user ${client.user}`)
-        await fx.shell_exec(`mysql --execute "${client.createUser}"`);
+        await fx.shell_exec(`mysql --execute "CREATE USER '${client.user}'@'localhost' IDENTIFIED BY '${client.password}'";`);
 
-        console.log(`Running GRANT queries ${client.user}`);
+        await fx.shell_exec(`mysql --execute "GRANT ALL PRIVILEGES ON *.* TO '${client.user}'@'localhost';"`);
 
-        for (let grantQuery of client.grants){
-            await fx.shell_exec(`mysql --execute "${grantQuery}"`);
-        }
         fx.println();
         fx.println();
     }
 
+    await fx.shell_exec(`mysql --execute "FLUSH PRIVILEGES;"`);
+
     await fx.shell_exec(`rm -rf server-db`);
-    fx.println();
-    fx.println();
 
 })();
