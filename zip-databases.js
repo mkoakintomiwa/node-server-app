@@ -27,17 +27,18 @@ fx.println();
 
     console.log("Writing clients...");
 
-    //let users = db.users();
+    let users = db.users();
 
     let clients = [];
 
     for (let user of await db.all_users(conn)){
-        if (user!="root"){
+        if (users.includes(user) && user!="root"){
             console.log(user)
             fx.println();
+            let client = db.client(user);
             clients.push({
                 user: user,
-                createUser: await db.createUserQueries(user,conn),
+                password: client.password,
                 grants: await db.userGrantsQueries(user,conn)
             });
         }    
