@@ -1,0 +1,15 @@
+{
+    "mysql":{
+		"clients":{
+			"root":{
+				"password":"SCQ7FmN4rTIdco"
+			},
+			"edepos5_admin":{
+				"password":"C~%d_;#_C0Ac"
+			},
+			"edepos5_admin_2":{
+				"password":"aR}3)Q)P=Kmd"
+			}
+		}
+	}
+}
