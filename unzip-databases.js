@@ -15,6 +15,7 @@ var path = require("path");
         },async function(err,matches){
             for(let filePath of matches){
                 let database_name = path.basename(filePath).replace(".sql","");
+                await fx.shell_exec(`mysql --execute "DROP DATABASE IF EXISTS ${database_name}"`);
                 await fx.shell_exec(`mysql --execute "CREATE DATABASE ${database_name}"`);
                 console.log(`Importing ${database_name}`);
                 fx.println();
