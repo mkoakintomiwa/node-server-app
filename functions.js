@@ -1451,28 +1451,28 @@ var zipDatabases = exports.zipDatabases = async function(db_connection){
 
     for (let database_name of await db.all_databases(subquery,db_connection)){
         console.log(`Dumping ${database_name}`);
-        let dump = await fx.shell_exec(`mysqldump ${database_name}`,{
+        let dump = await shell_exec(`mysqldump ${database_name}`,{
             hide_output: true
         });
         console.log(`Adding ${database_name} to zip archive`);
         zip.addFile(`databases/${database_name}.sql`,Buffer.alloc(dump.length,dump));
-        fx.println();
-        fx.println();
+        println();
+        println();
     }
 
     console.log("Writing client...");
 
-    let content = JSON.stringify(fx.mysql_cnf(),null,4);
+    let content = JSON.stringify(mysql_cnf(),null,4);
 
     zip.addFile(`client.json`,Buffer.alloc(content.length,content));
 
-	let zipFileName = `db-backup-${fx.UTCDate()}.zip`; 
+	let zipFileName = `db-backup-${UTCDate()}.zip`; 
 
     console.log(`Creating ${zipFileName}`);
 
-    zip.writeZip(`db-backup-${fx.UTCDate()}`);
+    zip.writeZip(`db-backup-${UTCDate()}`);
 
-    fx.println();
+    println();
 
 	return zipFileName;
 }
