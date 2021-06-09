@@ -1,7 +1,5 @@
 const mysql = require('mysql2');
 const fx = require('./functions');
-var ini = require('node-ini');
-const os = require("os");
 
 
 var create_connection = exports.create_connection = function(options={}){
