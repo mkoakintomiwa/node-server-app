@@ -2,6 +2,9 @@ const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 const os = require("os");
+const argv = require("yargs").argv;
+
+let emailAddress = argv._[0];
 
 
 const SCOPES = [
