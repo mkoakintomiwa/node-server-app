@@ -6,7 +6,7 @@ const os = require("os");
 
 var create_connection = exports.create_connection = function(options={}){
 
-    var cnf = ini.parseSync(`${os.homedir()}/.my.cnf`);
+    let cnf = fx.mysql_cnf();
 
     let $options = fx.setDefaults({
         host:"localhost",
@@ -105,7 +105,7 @@ var all_users = exports.all_users = async function(connection){
 
 var all_databases = exports.all_databases = async function(subquery="",connection){
     let rows = await fetch(`SHOW DATABASES ${subquery}`,null,connection);
-    console.log(rows);
+    
     let database_names = [];
     let native_database_names = ["information_schema","mysql","performance_schema","sys"];
 

@@ -880,6 +880,11 @@ var config = exports.config = function(){
 }
 
 
+var mysql_cnf = exports.mysql_cnf = function(){
+	return ini.parseSync(`${os.homedir()}/.my.cnf`);
+}
+
+
 var writeConfig = exports.writeConfig = function(_config,_document_root=null){
 	if (!_document_root) _document_root = document_root();
 	let _path = path.join(_document_root,".webman","config.json");
@@ -1421,4 +1426,9 @@ var googleAccountAPIAuth = exports.googleAccountAPIAuth = function(emailAddress)
 		`${os.homedir()}/public_html/assets/google/accounts/${emailAddress}/token.json`,
 		`${os.homedir()}/public_html/assets/google/accounts/${emailAddress}/credentials.json`
 	)
+}
+
+
+var UTCDate = exports.UTCDate = function(){
+	return new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 }

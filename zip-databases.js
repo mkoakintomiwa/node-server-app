@@ -16,8 +16,6 @@ fx.println();
 
     console.log(await db.all_databases(subquery,conn));
 
-    require("process").exit(-1);
-
     for (let database_name of await db.all_databases(subquery,conn)){
         console.log(`Dumping ${database_name}`);
         let dump = await fx.shell_exec(`mysqldump ${database_name}`,{
@@ -29,31 +27,15 @@ fx.println();
         fx.println();
     }
 
-    console.log("Writing clients...");
+    console.log("Writing client...");
 
-    let users = db.users();
+    let content = JSON.stringify(fx.mysql_cnf(),null,4);
 
-    let clients = [];
-
-    for (let user of await db.all_users(conn)){
-        if (users.includes(user) && user!="root"){
-            console.log(user)
-            fx.println();
-            let client = db.client(user);
-            clients.push({
-                user: user,
-                password: client.password
-            });
-        }    
-    }
-
-    let content = JSON.stringify(clients,null,4);
-
-    zip.addFile(`clients.json`,Buffer.alloc(content.length,content));
+    zip.addFile(`client.json`,Buffer.alloc(content.length,content));
 
     console.log("Creating server-db.zip");
 
-    zip.writeZip("server-db.zip");
+    zip.writeZip(`db-backup-${fx.UTCDate()}`);
     
     db.close_connection(conn);
 
