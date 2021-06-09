@@ -4,7 +4,7 @@ const {spawn} = require("child_process");
 const EventEmitter = require('events');
 const {google} = require('googleapis');
 const os = require("os");
-var ini = require('node-ini');
+const ini = require('node-ini');
 
 const eventEmitter = new EventEmitter();
 
