@@ -104,7 +104,7 @@ var all_users = exports.all_users = async function(connection){
 
 
 var all_databases = exports.all_databases = async function(subquery="",connection){
-    let rows = await fetch(`SHOW DATABASES ${subquery}`,null,connection);
+    let rows = await fetch(`SELECT schema_name FROM information_schema.schemata ${subquery}`,null,connection);
     console.log(rows);
     let database_names = [];
     let native_database_names = ["information_schema","mysql","performance_schema","sys"];
