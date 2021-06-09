@@ -269,7 +269,7 @@ var shell_exec = exports.shell_exec = async function(command,_options={}){
 		hide_output:false
 	},_options);
 
-	var logFile = "/root/shell";
+	var logFile = `${os.homedir()}/.shell`;
 	var command_append;
 
 	if (options.hide_output){
