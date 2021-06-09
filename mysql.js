@@ -1,15 +1,17 @@
 const mysql = require('mysql2');
 const fx = require('./functions');
+var ini = require('node-ini');
+const os = require("os");
 
 
 var create_connection = exports.create_connection = function(options={}){
 
-    let config = fx.config();
+    var cnf = ini.parseSync(`${os.homedir()}/.my.cnf`);
 
     let $options = fx.setDefaults({
         host:"localhost",
-        user: "root",
-        password: config.mysql.clients.root.password,
+        user: cnf.client.user,
+        password: cnf.client.password,
         database:"mysql",
     },options);
 

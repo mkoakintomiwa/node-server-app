@@ -1,7 +1,7 @@
-let fx = require("./functions");
-let db  = require("./mysql");
-let argv = require("yargs").argv;
-var AdmZip = require('adm-zip');
+const fx = require("./functions");
+const db  = require("./mysql");
+const argv = require("yargs").argv;
+const AdmZip = require('adm-zip');
 
 fx.println();
 
@@ -14,9 +14,13 @@ fx.println();
 
     var zip = new AdmZip();
 
+    console.log(await db.all_databases(subquery,conn));
+
+    require("process").exit(-1);
+
     for (let database_name of await db.all_databases(subquery,conn)){
         console.log(`Dumping ${database_name}`);
-        let dump = await fx.shell_exec(`mysqldump -u root ${database_name}`,{
+        let dump = await fx.shell_exec(`mysqldump ${database_name}`,{
             hide_output: true
         });
         console.log(`Adding ${database_name} to zip archive`);
