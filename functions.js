@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const {spawn} = require("child_process");
 const EventEmitter = require('events');
+const {google} = require('googleapis');
+const os = require("os");
 
 const eventEmitter = new EventEmitter();
 
@@ -1397,3 +1399,26 @@ var hex2bin = exports.hex2bin = function(h) {
 var escapeShell = exports.escapeShell = function(cmd) {
 	return '"'+cmd.replace(/(["\s'$`\\])/g,'\\$1')+'"';
 };
+
+
+
+var getGoogleAPIAuth = exports.getGoogleAPIAuth = function(token_path,credentials_path){
+
+    let credentials = JSON.parse(fs.readFileSync(credentials_path).toString());
+    let token = JSON.parse(fs.readFileSync(token_path).toString());
+
+    const {client_secret, client_id, redirect_uris} = credentials.installed;
+    const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+
+    oAuth2Client.setCredentials(token);
+    return oAuth2Client;
+}
+
+
+
+var googleAccountAPIAuth = exports.googleAccountAPIAuth = function(emailAddress){
+	return getGoogleAPIAuth(
+		`${os.homedir()}/public_html/assets/google/accounts/${emailAddress}/token.json`,
+		`${os.homedir()}/public_html/assets/google/accounts/${emailAddress}/credentials.json`
+	)
+}
