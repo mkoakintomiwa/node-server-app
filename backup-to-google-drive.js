@@ -47,6 +47,7 @@ const db = require("./mysql");
                     } else {
                         console.log('File Id: ', file.id);
                     }
+                    db.close_connection(db_connection);
                 });
             });
         } else {
