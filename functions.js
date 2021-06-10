@@ -1431,7 +1431,8 @@ var googleAccountAPIAuth = exports.googleAccountAPIAuth = function(emailAddress)
 
 
 var UTCDate = exports.UTCDate = function(){
-	return new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+	var d = new Date("2020-04-13T00:00:00.000+08:00"); /* midnight in China on April 13th */
+	return d.toLocaleString('en-US', { timeZone: 'Africa/Lagos' });
 }
 
 

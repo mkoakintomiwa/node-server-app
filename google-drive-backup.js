@@ -18,7 +18,7 @@ const db = require("./mysql");
 
     let specsZipName = `specs-${fx.UTCDate()}.zip`;
 
-    fx.shell_exec(`zip -r "${specsZipName}" ${os.homedir()}/public_html/specs`);
+    fx.shell_exec(`cd ${os.homedir()}/public_html/specs && zip -r "${specsZipName}"`);
 
     drive.files.list({
         q: "mimeType='application/vnd.google-apps.folder' and trashed=false and name='server-backups'",
