@@ -9,19 +9,23 @@ const {google} = require('googleapis');
 
     let fileId = argv["file-id"];
 
-    //let destPath = argv["dest"];
+    let destPath = argv["dest"];
 
     let auth = fx.googleAccountAPIAuth(emailAddress);
 
     const drive = google.drive({version: 'v3', auth});
 
-    //var dest = fs.createWriteStream(destPath);
+    var dest = fs.createWriteStream(destPath);
     
     drive.files.get({
         fileId: fileId,
         alt: 'media'
-    }).then(response=>{
-        console.log(response.data);
+    }, {responseType: 'stream'}).then(response=>{
+        response.data.on('end', function () {
+            console.log(`Downloaded ${destPath}`);
+          }).on('error', function (err) {
+            console.log('Error during download', err);
+          }).pipe(dest)
     })
 
 })();
