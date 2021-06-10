@@ -1,4 +1,5 @@
 const fx = require("./functions");
+const fs = require("fs");
 const os = require("os");
 const argv = require("yargs").argv;
 const {google} = require('googleapis');
