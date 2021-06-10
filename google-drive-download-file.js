@@ -21,7 +21,7 @@ const {google} = require('googleapis');
         fileId: fileId,
         alt: 'media'
     }).then(response=>{
-        console.log(response.data.webViewLink);
+        console.log(response.data);
     })
 
 })();
