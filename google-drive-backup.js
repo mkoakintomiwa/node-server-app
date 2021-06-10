@@ -54,10 +54,11 @@ const db = require("./mysql");
                                 console.log(`${filename} uploaded.`)
                                 fs.unlinkSync(filename);
                             }
-                            db.close_connection(db_connection);
+                            resolve();
                         });
                     });
                 }
+                db.close_connection(db_connection);
             });
         } else {
             console.log('No files found.');
