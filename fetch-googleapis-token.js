@@ -8,7 +8,7 @@ let emailAddress = argv._[0];
 
 
 const SCOPES = [
-    'https://www.googleapis.com/auth/drive.metadata.readonly'
+    'https://www.googleapis.com/auth/drive'
 ];
 
 
