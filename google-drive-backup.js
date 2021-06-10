@@ -28,7 +28,7 @@ const db = require("./mysql");
         if (err) return console.log('The API returned an error: ' + err);
         const files = res.data.files;
         if (files.length) {
-            files.map((file) => {
+            files.map(async (file) => {
 
                 for (let filename of [zipBackupFileName,specsZipName]){
                     await new Promise(function(resolve){
