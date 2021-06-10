@@ -60,6 +60,7 @@ const process = require("process");
                     });
                 }
                 db.close_connection(db_connection);
+                fx.println();
             });
         } else {
             console.log('No files found.');
