@@ -1447,8 +1447,6 @@ var zipDatabases = exports.zipDatabases = async function(db_connection){
 
     var zip = new AdmZip();
 
-    console.log(await db.all_databases(subquery,db_connection));
-
     for (let database_name of await db.all_databases(subquery,db_connection)){
         console.log(`Dumping ${database_name}`);
         let dump = await shell_exec(`mysqldump ${database_name}`,{
@@ -1470,7 +1468,7 @@ var zipDatabases = exports.zipDatabases = async function(db_connection){
 
     console.log(`Creating ${zipFileName}`);
 
-    zip.writeZip(`db-backup-${UTCDate()}`);
+    zip.writeZip(zipFileName);
 
     println();
 
