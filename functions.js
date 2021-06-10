@@ -1442,7 +1442,7 @@ var zipDatabases = exports.zipDatabases = async function(db_connection){
 	const AdmZip = require('adm-zip');
 
     let subquery = "";
-    if (argv._[0]) subquery = `LIKE '${argv._[0]}'`;
+    if (argv["like"]) subquery = `LIKE '${argv["like"]}'`;
 
 
     var zip = new AdmZip();

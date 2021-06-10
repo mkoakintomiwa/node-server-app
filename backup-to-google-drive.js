@@ -45,7 +45,8 @@ const db = require("./mysql");
                     // Handle error
                         console.error(err);
                     } else {
-                        console.log('File Id: ', file.id);
+                        console.log(`${zipBackupFileName} uploaded.`)
+                        fs.unlinkSync(zipBackupFileName);
                     }
                     db.close_connection(db_connection);
                 });
