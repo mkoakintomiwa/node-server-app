@@ -3,7 +3,6 @@ const fs = require("fs");
 const os = require("os");
 const argv = require("yargs").argv;
 const {google} = require('googleapis');
-const db = require("./mysql");
 
 (async _=>{
     let emailAddress = argv._[0];
