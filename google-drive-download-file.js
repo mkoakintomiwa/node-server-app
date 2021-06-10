@@ -20,10 +20,12 @@ const {google} = require('googleapis');
     drive.files.get({
         fileId: fileId,
         alt: 'media'
-    }).on('end', function () {
-      console.log(`Downloaded ${destPath}`);
-    }).on('error', function (err) {
-      console.log('Error during download', err);
-    }).pipe(dest)
+    }).then(response=>{
+        response.data.on('end', function () {
+            console.log(`Downloaded ${destPath}`);
+          }).on('error', function (err) {
+            console.log('Error during download', err);
+          }).pipe(dest)
+    })
 
 })();
