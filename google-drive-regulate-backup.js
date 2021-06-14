@@ -1,0 +1,32 @@
+const fx = require("./functions");
+const fs = require("fs");
+const os = require("os");
+const argv = require("yargs").argv;
+const {google} = require('googleapis');
+const db = require("./mysql");
+const process = require("process");
+
+(async _=>{
+    let emailAddress = argv._[0];
+
+    let auth = fx.googleAccountAPIAuth(emailAddress);
+
+    const drive = google.drive({version: 'v3', auth});
+
+    drive.files.list({
+        q: "trashed=false",
+        fields: 'nextPageToken, files(id, name)',
+        spaces: 'drive'
+    }, (err, res) => {
+        if (err) return console.log('The API returned an error: ' + err);
+        const files = res.data.files;
+        if (files.length) {
+            files.map(async (file) => {
+                console.log(file.id);
+                fx.println();
+            });
+        } else {
+            console.log('No files found.');
+        }
+    });
+})();
