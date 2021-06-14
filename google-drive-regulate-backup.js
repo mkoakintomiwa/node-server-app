@@ -13,8 +13,10 @@ const process = require("process");
 
     const drive = google.drive({version: 'v3', auth});
 
+   let createdTime = new Date(Date.now() - 60*60*30*3).toISOString();
+
     drive.files.list({
-        q: "trashed=false",
+        q: `trashed=false and createdTime < '${createdTime}'`,
         fields: 'nextPageToken, files(id, name)',
         spaces: 'drive'
     }, (err, res) => {
@@ -22,7 +24,7 @@ const process = require("process");
         const files = res.data.files;
         if (files.length) {
             files.map(async (file) => {
-                console.log(file.id);
+                console.log(file.name);
                 fx.println();
             });
         } else {
