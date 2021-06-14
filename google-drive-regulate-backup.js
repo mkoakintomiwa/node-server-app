@@ -27,8 +27,13 @@ const process = require("process");
         const files = res.data.files;
         if (files.length) {
             files.map(async (file) => {
-                console.log(file.name);
-                fx.println();
+                
+                await drive.files.delete({
+                    supportsTeamDrives: 'false',
+                    fileId: file.id
+                });
+
+                //fx.println();
             });
         } else {
             console.log('No files found.');
