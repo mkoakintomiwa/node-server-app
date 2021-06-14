@@ -15,6 +15,8 @@ const process = require("process");
 
    let createdTime = new Date(Date.now() - 60*60*30*1).toISOString();
 
+   console.log(createdTime);
+
     drive.files.list({
         q: `trashed=false and createdTime < '${createdTime}'`,
         fields: 'nextPageToken, files(id, name)',
