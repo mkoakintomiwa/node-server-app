@@ -13,7 +13,7 @@ const process = require("process");
 
     const drive = google.drive({version: 'v3', auth});
 
-   let createdTime = new Date(Date.now() - 60*30*10).toISOString();
+   let createdTime = new Date(Date.now() - 1000*60*30*10).toISOString();
 
    console.log(createdTime)
 
