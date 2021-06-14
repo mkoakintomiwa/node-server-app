@@ -13,9 +13,7 @@ const process = require("process");
 
     const drive = google.drive({version: 'v3', auth});
 
-   let createdTime = new Date(Date.now() - 60*60*30*1).toISOString();
-
-   console.log(createdTime);
+   let createdTime = new Date(Date.now() - 60*60*30*4).toISOString();
 
     drive.files.list({
         q: `trashed=false and createdTime < '${createdTime}'`,
