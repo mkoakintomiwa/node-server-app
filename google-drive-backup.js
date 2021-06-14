@@ -19,7 +19,7 @@ const process = require("process");
 
     let specsZipName = `specs-${fx.UTCDate()}.zip`;
 
-    await fx.shell_exec(`cd ${os.homedir()}/public_html/specs && zip -r "${specsZipName}" . && mv "${os.homedir()}/public_html/specs/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
+    await fx.shell_exec(`cd ${os.homedir()}/public_html/specs && rm -rf specs*.zip && zip -r "${specsZipName}" . && mv "${os.homedir()}/public_html/specs/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
 
     drive.files.list({
         q: "mimeType='application/vnd.google-apps.folder' and trashed=false and name='server-backups'",
