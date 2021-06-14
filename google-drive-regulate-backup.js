@@ -13,7 +13,9 @@ const process = require("process");
 
     const drive = google.drive({version: 'v3', auth});
 
-   let createdTime = new Date(Date.now() - 60*60*30*4).toISOString();
+   let createdTime = new Date(Date.now() - 60*60*30*10).toISOString();
+
+   console.log(createdTime)
 
     drive.files.list({
         q: `mimeType != 'application/vnd.google-apps.folder' and trashed=false and createdTime < '${createdTime}'`,
