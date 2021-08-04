@@ -1443,7 +1443,7 @@ var zipDatabases = exports.zipDatabases = async function(username=null,password=
 	const mysqldump = require("mysqldump");
 	
 	let cnf = mysql_cnf();
-	console.log(cnf);
+	
 	if (!username) username = cnf.user;
 	if (!password) password = cnf.password;
 
