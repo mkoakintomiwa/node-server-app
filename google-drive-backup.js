@@ -13,7 +13,9 @@ const process = require("process");
 
     const drive = google.drive({version: 'v3', auth});
 
-    let zipBackupFileName = await fx.zipDatabases();
+    let db_connection = db.create_connection();
+
+    let zipBackupFileName = await fx.zipDatabases(db_connection);
 
     let specsZipName = `specs-${fx.UTCDate()}.zip`;
 
@@ -29,7 +31,7 @@ const process = require("process");
         if (files.length) {
             files.map(async (file) => {
 
-                for (let filename of [zipBackupFileName,specsZipName]){
+            for (let filename of [zipBackupFileName,specsZipName]){
                     await new Promise(function(resolve){
                         var fileMetadata = {
                             'name': filename,
@@ -57,6 +59,7 @@ const process = require("process");
                         });
                     });
                 }
+                db.close_connection(db_connection);
                 fx.println();
             });
         } else {

@@ -1435,23 +1435,12 @@ var UTCDate = exports.UTCDate = function(){
 }
 
 
-var zipDatabases = exports.zipDatabases = async function(username=null,password=null,host="localhost"){
+var zipDatabases = exports.zipDatabases = async function(db_connection){
 
 	const db  = require("./mysql");
 	const argv = require("yargs").argv;
 	const AdmZip = require('adm-zip');
-	const mysqldump = require("mysqldump");
-	
-	let cnf = mysql_cnf();
-	
-	if (!username) username = cnf.user;
-	if (!password) password = cnf.password;
-
-	const db_connection = db.create_connection({
-		username: username,
-		password: password,
-		host: host
-	});
+	const spawn = require('child_process').spawn;
 
     let subquery = "";
     if (argv["like"]) subquery = `LIKE '${argv["like"]}'`;
@@ -1461,23 +1450,25 @@ var zipDatabases = exports.zipDatabases = async function(username=null,password=
 
     for (let database_name of await db.all_databases(subquery,db_connection)){
         console.log(`Dumping ${database_name}`);
-		console.log(username);
-		let dump = await mysqldump({
-			connection: {
-				host: host,
-				user: username,
-				password: password,
-				database: database_name,
-			},
+        
+		let dump = "";
+
+		let dumpToFile = ".dump.sql";
+
+		await new Promise(resolve=>{
+			spawn('mysqldump', [database_name]).stdout.pipe(fs.createWriteStream(dumpToFile)).on("finish",_=>{
+				resolve();
+			});
+			
 		});
+
+		dump = fs.readFileSync(dumpToFile);
 
         console.log(`Adding ${database_name} to zip archive`);
         zip.addFile(`databases/${database_name}.sql`,Buffer.alloc(dump.length,dump));
         println();
         println();
     }
-
-	db.close_connection(db_connection);
 
     console.log("Writing client...");
 
