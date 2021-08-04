@@ -1461,7 +1461,7 @@ var zipDatabases = exports.zipDatabases = async function(username=null,password=
 
     for (let database_name of await db.all_databases(subquery,db_connection)){
         console.log(`Dumping ${database_name}`);
-
+		console.log(username);
 		let dump = await mysqldump({
 			connection: {
 				host: host,
