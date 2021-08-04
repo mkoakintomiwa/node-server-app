@@ -1443,6 +1443,7 @@ var zipDatabases = exports.zipDatabases = async function(username=null,password=
 	const mysqldump = require("mysqldump");
 	
 	let cnf = mysql_cnf();
+	console.log(cnf);
 	if (!username) username = cnf.username;
 	if (!password) password = cnf.password;
 
@@ -1475,6 +1476,8 @@ var zipDatabases = exports.zipDatabases = async function(username=null,password=
         println();
         println();
     }
+
+	db.close_connection(db_connection);
 
     console.log("Writing client...");
 
