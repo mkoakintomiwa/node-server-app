@@ -13,9 +13,7 @@ const process = require("process");
 
     const drive = google.drive({version: 'v3', auth});
 
-    let db_connection = db.create_connection();
-
-    let zipBackupFileName = await fx.zipDatabases(db_connection);
+    let zipBackupFileName = await fx.zipDatabases();
 
     let specsZipName = `specs-${fx.UTCDate()}.zip`;
 
@@ -59,7 +57,6 @@ const process = require("process");
                         });
                     });
                 }
-                db.close_connection(db_connection);
                 fx.println();
             });
         } else {

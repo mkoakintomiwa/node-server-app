@@ -1435,13 +1435,17 @@ var UTCDate = exports.UTCDate = function(){
 }
 
 
-var zipDatabases = exports.zipDatabases = async function(username,password,host="localhost"){
+var zipDatabases = exports.zipDatabases = async function(username=null,password=null,host="localhost"){
 
 	const db  = require("./mysql");
 	const argv = require("yargs").argv;
 	const AdmZip = require('adm-zip');
 	const mysqldump = require("mysqldump");
 	
+	let cnf = mysql_cnf();
+	if (!username) username = cnf.username;
+	if (!password) password = cnf.password;
+
 	const db_connection = db.create_connection({
 		username: username,
 		password: password,
