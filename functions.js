@@ -1444,7 +1444,7 @@ var zipDatabases = exports.zipDatabases = async function(username=null,password=
 	
 	let cnf = mysql_cnf();
 	console.log(cnf);
-	if (!username) username = cnf.username;
+	if (!username) username = cnf.user;
 	if (!password) password = cnf.password;
 
 	const db_connection = db.create_connection({
