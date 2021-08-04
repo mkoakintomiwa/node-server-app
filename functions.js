@@ -1435,11 +1435,18 @@ var UTCDate = exports.UTCDate = function(){
 }
 
 
-var zipDatabases = exports.zipDatabases = async function(db_connection){
+var zipDatabases = exports.zipDatabases = async function(username,password,host="localhost"){
 
 	const db  = require("./mysql");
 	const argv = require("yargs").argv;
 	const AdmZip = require('adm-zip');
+	const mysqldump = require("mysqldump");
+	
+	const db_connection = db.create_connection({
+		username: username,
+		password: password,
+		host: host
+	});
 
     let subquery = "";
     if (argv["like"]) subquery = `LIKE '${argv["like"]}'`;
@@ -1449,9 +1456,16 @@ var zipDatabases = exports.zipDatabases = async function(db_connection){
 
     for (let database_name of await db.all_databases(subquery,db_connection)){
         console.log(`Dumping ${database_name}`);
-        let dump = await shell_exec(`mysqldump ${database_name}`,{
-            hide_output: true
-        });
+
+		let dump = await mysqldump({
+			connection: {
+				host: host,
+				user: username,
+				password: password,
+				database: database_name,
+			},
+		});
+
         console.log(`Adding ${database_name} to zip archive`);
         zip.addFile(`databases/${database_name}.sql`,Buffer.alloc(dump.length,dump));
         println();
