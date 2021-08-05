@@ -268,17 +268,8 @@ var shell_exec = exports.shell_exec = async function(command,_options={}){
 		},
 		hide_output:false
 	},_options);
-
-	var logFile = `${os.homedir()}/.shell`;
-	var command_append;
-
-	if (options.hide_output){
-		command_append = `> ${logFile}`;
-	}else{
-		command_append = `| tee -a ${logFile}`;
-	}
 	
-	command = `${command} 2>&1 ${command_append}`;
+	command = `${command} 2>&1`;
 	
 	let response;
 	await new Promise(resolve=>{
@@ -299,10 +290,7 @@ var shell_exec = exports.shell_exec = async function(command,_options={}){
 		// });
 
 		ls.on("exit",code=>{
-			var r = fs.readFileSync(logFile,"utf-8").trim();
-			fs.writeFileSync(logFile,"")
-			response = r;
-            resolve(r);
+            resolve();
 		});
 	});
     return response;
