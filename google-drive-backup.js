@@ -26,6 +26,8 @@ const path = require("path");
 
     let specsDir = `${os.homedir()}/${specsRelDir}`;
 
+    console.log(specsDir);
+
     let specsExist = fs.existsSync(specsDir);
 
     if (specsExist){
