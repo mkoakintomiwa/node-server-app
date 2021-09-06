@@ -24,7 +24,7 @@ const path = require("path");
 
     let specsZipName = `${specsDirBasename}-${fx.UTCDate()}.zip`;
 
-    let specsDir = `${os.homedir()}/${specsDir}`;
+    let specsDir = `${os.homedir()}/${specsRelDir}`;
 
     let specsExist = fs.existsSync(specsDir);
 
