@@ -28,12 +28,14 @@ const path = require("path");
 
     let specsDir = `${os.homedir()}/${specsRelDir}`;
 
-    console.log(specsDir);
-
     let specsExist = fs.existsSync(specsDir);
 
+    let excludeSubcommand = "";
+
+    if (argv["x"]) excludeSubcommand = ` -x ${argv["x"]} `;
+
     if (specsExist){
-        await fx.shell_exec(`cd ${specsDir} && rm -rf ${specsDirBasename}*.zip && zip -rq "${specsZipName}" . && mv "${specsDir}/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
+        await fx.shell_exec(`cd ${specsDir} && rm -rf ${specsDirBasename}*.zip && zip -rq "${specsZipName}" . ${excludeSubcommand} && mv "${specsDir}/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
     }
 
     drive.files.list({
