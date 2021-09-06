@@ -5,9 +5,14 @@ const argv = require("yargs").argv;
 const {google} = require('googleapis');
 const db = require("./mysql");
 const process = require("process");
+const path = require("path");
 
 (async _=>{
     let emailAddress = argv._[0];
+
+    let specsDir = argv["files-dir"] || "public_html/specs";
+
+    let specsDirBasename = path.basename(specsDir);
 
     let auth = fx.googleAccountAPIAuth(emailAddress);
 
@@ -17,9 +22,9 @@ const process = require("process");
 
     let zipBackupFileName = await fx.zipDatabases(db_connection);
 
-    let specsZipName = `specs-${fx.UTCDate()}.zip`;
+    let specsZipName = `${specsDirBasename}-${fx.UTCDate()}.zip`;
 
-    await fx.shell_exec(`cd ${os.homedir()}/public_html/specs && rm -rf specs*.zip && zip -rq "${specsZipName}" . && mv "${os.homedir()}/public_html/specs/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
+    await fx.shell_exec(`cd ${os.homedir()}/${specsDir} && rm -rf specs*.zip && zip -rq "${specsZipName}" . && mv "${os.homedir()}/public_html/specs/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
 
     drive.files.list({
         q: "mimeType='application/vnd.google-apps.folder' and trashed=false and name='server-backups'",
