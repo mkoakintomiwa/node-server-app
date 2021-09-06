@@ -14,7 +14,9 @@ const path = require("path");
 
     let specsDirBasename = path.basename(specsRelDir);
 
-    let auth = fx.googleAccountAPIAuth(emailAddress);
+    let rel_dirname = argv["d"] || "";
+
+    let auth = fx.googleAccountAPIAuth(emailAddress,rel_dirname);
 
     const drive = google.drive({version: 'v3', auth});
 
