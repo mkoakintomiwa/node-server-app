@@ -35,6 +35,7 @@ const path = require("path");
     if (argv["x"]) excludeSubcommand = ` -x ${argv["x"]} `;
 
     if (specsExist){
+        console.log(`cd ${specsDir} && rm -rf ${specsDirBasename}*.zip && zip -rq "${specsZipName}" . ${excludeSubcommand} && mv "${specsDir}/${specsZipName}" "${process.cwd()}/${specsZipName}"`)
         await fx.shell_exec(`cd ${specsDir} && rm -rf ${specsDirBasename}*.zip && zip -rq "${specsZipName}" . ${excludeSubcommand} && mv "${specsDir}/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
     }
 
