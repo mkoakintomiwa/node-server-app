@@ -10,9 +10,9 @@ const path = require("path");
 (async _=>{
     let emailAddress = argv._[0];
 
-    let specsDir = argv["files-dir"] || "public_html/specs";
+    let specsRelDir = argv["s"] || "public_html/specs";
 
-    let specsDirBasename = path.basename(specsDir);
+    let specsDirBasename = path.basename(specsRelDir);
 
     let auth = fx.googleAccountAPIAuth(emailAddress);
 
@@ -24,7 +24,13 @@ const path = require("path");
 
     let specsZipName = `${specsDirBasename}-${fx.UTCDate()}.zip`;
 
-    await fx.shell_exec(`cd ${os.homedir()}/${specsDir} && rm -rf specs*.zip && zip -rq "${specsZipName}" . && mv "${os.homedir()}/public_html/specs/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
+    let specsDir = `${os.homedir()}/${specsDir}`;
+
+    let specsExist = fs.existsSync(specsDir);
+
+    if (specsExist){
+        await fx.shell_exec(`cd ${specsDir} && rm -rf ${specsDirBasename}*.zip && zip -rq "${specsZipName}" . && mv "${specsDir}/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
+    }
 
     drive.files.list({
         q: "mimeType='application/vnd.google-apps.folder' and trashed=false and name='server-backups'",
@@ -36,7 +42,11 @@ const path = require("path");
         if (files.length) {
             files.map(async (file) => {
 
-            for (let filename of [zipBackupFileName,specsZipName]){
+            let uploadItems = [zipBackupFileName];
+
+            if (specsExist) uploadItems.push(specsZipName);
+
+            for (let filename of uploadItems){
                     await new Promise(function(resolve){
                         var fileMetadata = {
                             'name': filename,
