@@ -1450,7 +1450,7 @@ var zipDatabases = exports.zipDatabases = async function(db_connection){
 			
 		});
 
-		dump = fs.readFileSync(dumpToFile);
+		dump = fs.readFileSync(dumpToFile).toString();
 
         console.log(`Adding ${database_name} to zip archive`);
         zip.addFile(`databases/${database_name}.sql`,Buffer.alloc(dump.length,dump));
