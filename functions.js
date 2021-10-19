@@ -1474,3 +1474,25 @@ var zipDatabases = exports.zipDatabases = async function(db_connection){
 
 	return zipFileName;
 }
+
+
+var download = exports.download = function(fileUrl,localPath,options){
+	var http;
+	if (fileUrl.indexOf("https://")!=-1){
+		http = require('https');
+	}else{
+		http = require('http');
+	}
+
+
+    const file = fs.createWriteStream(localPath);
+    
+    return new Promise(function(resolve){
+        http.get(fileUrl,function(response){
+            response.pipe(file);
+            file.on("finish",function(){
+                resolve(file);
+            });
+        })
+    })
+}
