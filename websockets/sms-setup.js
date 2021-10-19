@@ -304,8 +304,6 @@ async function portalSetup(ws,request){
 
     mainDBConnection.end();
 
-    fs.unlinkSync(path.join(data.current_directory,"setup.php"));
-
     ws.close(3030,JSON.stringify({
         developer_uid: developer.uid
     }));
