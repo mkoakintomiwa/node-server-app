@@ -1410,10 +1410,10 @@ var getGoogleAPIAuth = exports.getGoogleAPIAuth = function(token_path,credential
 
 
 
-var googleAccountAPIAuth = exports.googleAccountAPIAuth = function(emailAddress){
+var googleAccountAPIAuth = exports.googleAccountAPIAuth = function(emailAddress,rel_dirname=""){
 	return getGoogleAPIAuth(
-		`${os.homedir()}/public_html/assets/google/accounts/${emailAddress}/token.json`,
-		`${os.homedir()}/public_html/assets/google/accounts/${emailAddress}/credentials.json`
+		`${os.homedir()}/public_html${rel_dirname}/assets/google/accounts/${emailAddress}/token.json`,
+		`${os.homedir()}/public_html${rel_dirname}/assets/google/accounts/${emailAddress}/credentials.json`
 	)
 }
 

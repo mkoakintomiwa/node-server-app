@@ -5,11 +5,18 @@ const argv = require("yargs").argv;
 const {google} = require('googleapis');
 const db = require("./mysql");
 const process = require("process");
+const path = require("path");
 
 (async _=>{
     let emailAddress = argv._[0];
 
-    let auth = fx.googleAccountAPIAuth(emailAddress);
+    let specsRelDir = argv["s"] || "public_html/specs";
+
+    let specsDirBasename = path.basename(specsRelDir);
+
+    let rel_dirname = argv["d"] || "";
+
+    let auth = fx.googleAccountAPIAuth(emailAddress,rel_dirname);
 
     const drive = google.drive({version: 'v3', auth});
 
@@ -17,9 +24,19 @@ const process = require("process");
 
     let zipBackupFileName = await fx.zipDatabases(db_connection);
 
-    let specsZipName = `specs-${fx.UTCDate()}.zip`;
+    let specsZipName = `${specsDirBasename}-${fx.UTCDate()}.zip`;
 
-    await fx.shell_exec(`cd ${os.homedir()}/public_html/specs && rm -rf specs*.zip && zip -rq "${specsZipName}" . && mv "${os.homedir()}/public_html/specs/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
+    let specsDir = `${os.homedir()}/${specsRelDir}`;
+
+    let specsExist = fs.existsSync(specsDir);
+
+    let excludeSubcommand = "";
+
+    if (argv["x"]) excludeSubcommand = ` -x ${argv["x"]} `;
+
+    if (specsExist){
+        await fx.shell_exec(`cd ${specsDir} && rm -rf ${specsDirBasename}*.zip && zip -rq "${specsZipName}" . ${excludeSubcommand} && mv "${specsDir}/${specsZipName}" "${process.cwd()}/${specsZipName}"`);
+    }
 
     drive.files.list({
         q: "mimeType='application/vnd.google-apps.folder' and trashed=false and name='server-backups'",
@@ -31,7 +48,11 @@ const process = require("process");
         if (files.length) {
             files.map(async (file) => {
 
-            for (let filename of [zipBackupFileName,specsZipName]){
+            let uploadItems = [zipBackupFileName];
+
+            if (specsExist) uploadItems.push(specsZipName);
+
+            for (let filename of uploadItems){
                     await new Promise(function(resolve){
                         var fileMetadata = {
                             'name': filename,
