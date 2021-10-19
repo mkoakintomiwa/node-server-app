@@ -117,6 +117,8 @@ async function portalSetup(ws,request){
         sendDescription(e.message);
     });
 
+    await db.execute(`ALTER USER ${data.database_user}@'localhost' IDENTIFIED BY '${data.database_password}';`);
+
     await sendDescription(`Creating database ${data.database_name}`);
     
     await db.execute(`CREATE DATABASE IF NOT EXISTS ${data.database_name}`,[],databaseConnection);
