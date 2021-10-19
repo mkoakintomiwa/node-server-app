@@ -169,6 +169,10 @@ async function portalSetup(ws,request){
     ],mainDBConnection);
 
 
+    await sendDescription(`Creating developer's account`);
+    await db.execute(`INSERT INTO community_details (username,password,name,clearance,admin_priviledge) VALUES (?,?,?,?,?)`,[data.developer_username, data.developer_password, data.developer_name,'icitify-dev','true'],mainDBConnection);
+
+
     for(let branch of data.school_branches){
         await sendDescription(`Creating branch ${branch.branch_name}`);
         await db.execute(`INSERT INTO school_branches (branch_name) VALUES (?)`,[branch.branch_name],mainDBConnection);
@@ -178,8 +182,6 @@ async function portalSetup(ws,request){
     }
 
 
-    await sendDescription(`Creating developer's account`);
-    await db.execute(`INSERT INTO community_details (username,password,name,clearance,admin_priviledge) VALUES (?,?,?,?,?)`,[data.developer_username, data.developer_password, data.developer_name,'icitify-dev','true'],mainDBConnection);
 
     setContext("Files");
 
