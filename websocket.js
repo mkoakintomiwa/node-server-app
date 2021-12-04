@@ -32,7 +32,7 @@ const wss = new WebSocket.Server({server});
                     let headers = request.headers;
                     let data = request.data;
                     let module = require(data.path);
-                    nocache(request.path);
+                    nocache(data.path);
                     receivedMessages++;
                     module.main(ws);
                 }catch(e){
