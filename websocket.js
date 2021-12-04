@@ -29,7 +29,9 @@ const wss = new WebSocket.Server({server});
             if (receivedMessages === 0){
                 try{
                     let request = JSON.parse(requestJSONString.toString());
-                    let module = require(request.path);
+                    let headers = request.headers;
+                    let data = request.data;
+                    let module = require(data.path);
                     nocache(request.path);
                     receivedMessages++;
                     module.main(ws);
