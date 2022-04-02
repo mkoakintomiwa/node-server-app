@@ -2,9 +2,9 @@ const fx = require("./functions");
 const ssh = require("./ssh");
 const argv = require("yargs").argv;
 
-let host = argv.host;
-let username = argv.username;
-let password = argv.password;
+let host = argv.h || argv.host;
+let username = argv.u || argv.username;
+let password = argv.p || argv.password;
 
 let localFilePath = argv._[0] || argv["local-file-path"];
 let remoteFilePath = argv._[1] || argv["remote-file-path"];
