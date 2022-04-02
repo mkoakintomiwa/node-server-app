@@ -6,8 +6,8 @@ let host = argv.host;
 let username = argv.username;
 let password = argv.password;
 
-let local_file_path = argv["local-file-path"];
-let remote_file_path = argv["remote-file-path"];
+let localFilePath = argv._[0] || argv["local-file-path"];
+let remoteFilePath = argv._[1] || argv["remote-file-path"];
 
 
 (async _=>{
@@ -17,9 +17,9 @@ let remote_file_path = argv["remote-file-path"];
         password: password
     });
 
-    await ssh_connection.putFile(local_file_path,remote_file_path,null,{
+    await ssh_connection.putFile(localFilePath,remoteFilePath,null,{
         step: (total_transferred,chunk,total_size)=>{
-        console.log(`${fx.round(total_transferred/total_size,8) * 100}%`)}
+        console.log(`${fx.round(total_transferred/total_size,5) * 100}%`)}
     });
 
     ssh_connection.dispose();
