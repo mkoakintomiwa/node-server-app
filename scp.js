@@ -23,7 +23,8 @@ let remoteFile = remote[3];
 
     await ssh_connection.putFile(localFile,remoteFile,null,{
         step: (total_transferred,chunk,total_size)=>{
-        console.log(`${fx.round(total_transferred/total_size,5) * 100}%`)}
+            console.log(`${fx.round(total_transferred/total_size,5) * 100}%`)
+        }
     });
 
     ssh_connection.dispose();
